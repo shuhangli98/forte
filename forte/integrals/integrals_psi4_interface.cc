@@ -340,7 +340,7 @@ void Psi4Integrals::rotate_mos() {
     std::shared_ptr<psi::Matrix> C_old = Ca_;
     std::shared_ptr<psi::Matrix> C_new(C_old->clone());
 
-    const auto& eps_a_old = *wfn_->epsilon_a();
+    auto& eps_a_old = *wfn_->epsilon_a();
     auto eps_a_new = *eps_a_old.clone();
 
     for (auto mo_group : rotate_mo_list) {
