@@ -1350,13 +1350,22 @@ double DSRG_MRPT2::E_VT2_6() {
         temp["uvwxyz"] += V_["uv1z"] * T2_["1wxy"];
         temp["uvwxyz"] += V_["w1xy"] * T2_["uv1z"];
     }
-    E += 0.25 * temp.block("aaaaaa")("uvwxyz") * rdms_.L3aaa()("xyzuvw");
 
+//    rdms_.L3aaa().iterate([&](const std::vector<size_t>& i, double& value) {
+//        set<int> set_1, set_2;
+//        set_1 = {(int)i[0], (int)i[1], (int)i[2]};
+//        set_2 = {(int)i[3], (int)i[4], (int)i[5]};
+//        if (set_1 != set_2) {
+//                value = 0;
+//        }
+//    });
+    E += 0.25 * temp.block("aaaaaa")("uvwxyz") * rdms_.L3aaa()("xyzuvw");
     rdms_.L3aaa().iterate([&](const std::vector<size_t>& i, double& value) {
-        if (abs(value) >= 1e-9) {
+        if (abs(value) != 0) {
             cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
         }
     });
+
 
     // bbb
     temp = ambit::BlockedTensor::build(tensor_type_, "temp", {"AAAAAA"});
@@ -1368,11 +1377,11 @@ double DSRG_MRPT2::E_VT2_6() {
         temp["UVWXYZ"] += V_["W!XY"] * T2_["UV!Z"];
     }
     E += 0.25 * temp.block("AAAAAA")("UVWXYZ") * rdms_.L3bbb()("XYZUVW");
-    rdms_.L3bbb().iterate([&](const std::vector<size_t>& i, double& value) {
-        if (abs(value) >= 1e-9) {
-            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
-        }
-    });
+//    rdms_.L3bbb().iterate([&](const std::vector<size_t>& i, double& value) {
+//        if (abs(value) >= 1e-9) {
+//            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+//        }
+//    });
 
     // aab
     temp = ambit::BlockedTensor::build(tensor_type_, "temp", {"aaAaaA"});
@@ -1394,11 +1403,11 @@ double DSRG_MRPT2::E_VT2_6() {
         temp["uvWxyZ"] -= 2.0 * V_["v!xZ"] * T2_["uWy!"];
     }
     E += 0.5 * temp.block("aaAaaA")("uvWxyZ") * rdms_.L3aab()("xyZuvW");
-    rdms_.L3aab().iterate([&](const std::vector<size_t>& i, double& value) {
-        if (abs(value) >= 1e-9) {
-            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
-        }
-    });
+//    rdms_.L3aab().iterate([&](const std::vector<size_t>& i, double& value) {
+//        if (abs(value) >= 1e-9) {
+//            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+//        }
+//    });
 
     // abb
     temp = ambit::BlockedTensor::build(tensor_type_, "temp", {"aAAaAA"});
@@ -1420,11 +1429,11 @@ double DSRG_MRPT2::E_VT2_6() {
         temp["uVWxYZ"] -= 2.0 * V_["1WxY"] * T2_["uV1Z"];
     }
     E += 0.5 * temp.block("aAAaAA")("uVWxYZ") * rdms_.L3abb()("xYZuVW");
-    rdms_.L3abb().iterate([&](const std::vector<size_t>& i, double& value) {
-        if (abs(value) >= 1e-9) {
-            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
-        }
-    });
+//    rdms_.L3abb().iterate([&](const std::vector<size_t>& i, double& value) {
+//        if (abs(value) >= 1e-9) {
+//            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+//        }
+//    });
 
     outfile->Printf("  Done. Timing %15.6f s", timer.get());
     dsrg_time_.add("220", timer.get());
