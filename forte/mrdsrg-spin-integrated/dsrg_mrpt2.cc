@@ -1351,14 +1351,31 @@ double DSRG_MRPT2::E_VT2_6() {
         temp["uvwxyz"] += V_["w1xy"] * T2_["uv1z"];
     }
 
-//    rdms_.L3aaa().iterate([&](const std::vector<size_t>& i, double& value) {
-//        set<int> set_1, set_2;
-//        set_1 = {(int)i[0], (int)i[1], (int)i[2]};
-//        set_2 = {(int)i[3], (int)i[4], (int)i[5]};
-//        if (set_1 != set_2) {
-//                value = 0;
-//        }
-//    });
+    rdms_.L3aaa().iterate([&](const std::vector<size_t>& i, double& value) {
+        std::vector<int> v1{(int)i[0], (int)i[1], (int)i[2]};
+        std::vector<int> v2{(int)i[3], (int)i[4], (int)i[5]};
+        std::sort(v1.begin(), v1.end());
+        std::sort(v2.begin(), v2.end());
+
+        std::vector<int> v_symDifference;
+        std::vector<int> v_diffvalues;
+        
+        std::set_symmetric_difference(
+            v1.begin(), v1.end(),
+            v2.begin(), v2.end(),
+            std::back_inserter(v_symDifference));
+        
+        for (int n : v_symDifference) {
+            v_diffvalues.push_back(n);
+        }
+        if (v_diffvalues.size() > 2) {
+            value = 0;
+        } else {
+//            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+        }
+    });
+
+
     E += 0.25 * temp.block("aaaaaa")("uvwxyz") * rdms_.L3aaa()("xyzuvw");
 
 
@@ -1392,7 +1409,7 @@ double DSRG_MRPT2::E_VT2_6() {
         if (v_diffvalues.size() > 2) {
             value = 0;
         } else {
-            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+//            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
         }
     });
 
@@ -1424,12 +1441,33 @@ double DSRG_MRPT2::E_VT2_6() {
         temp["uvWxyZ"] -= V_["v1xy"] * T2_["uW1Z"];
         temp["uvWxyZ"] -= 2.0 * V_["v!xZ"] * T2_["uWy!"];
     }
-    E += 0.5 * temp.block("aaAaaA")("uvWxyZ") * rdms_.L3aab()("xyZuvW");
-//    rdms_.L3aab().iterate([&](const std::vector<size_t>& i, double& value) {
-//        if (abs(value) >= 1e-9) {
+
+    rdms_.L3aab().iterate([&](const std::vector<size_t>& i, double& value) {
+        std::vector<int> v1{(int)i[0], (int)i[1], -((int)i[2])-1};
+        std::vector<int> v2{(int)i[3], (int)i[4], -((int)i[5])-1};
+        std::sort(v1.begin(), v1.end());
+        std::sort(v2.begin(), v2.end());
+
+        std::vector<int> v_symDifference;
+        std::vector<int> v_diffvalues;
+        
+        std::set_symmetric_difference(
+            v1.begin(), v1.end(),
+            v2.begin(), v2.end(),
+            std::back_inserter(v_symDifference));
+        
+        for (int n : v_symDifference) {
+            v_diffvalues.push_back(n);
+        }
+        if (v_diffvalues.size() > 2) {
+            value = 0;
+        } else {
 //            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
-//        }
-//    });
+        }
+    });
+
+
+    E += 0.5 * temp.block("aaAaaA")("uvWxyZ") * rdms_.L3aab()("xyZuvW");
 
     // abb
     temp = ambit::BlockedTensor::build(tensor_type_, "temp", {"aAAaAA"});
@@ -1450,12 +1488,33 @@ double DSRG_MRPT2::E_VT2_6() {
         temp["uVWxYZ"] -= V_["W!YZ"] * T2_["uVx!"];
         temp["uVWxYZ"] -= 2.0 * V_["1WxY"] * T2_["uV1Z"];
     }
-    E += 0.5 * temp.block("aAAaAA")("uVWxYZ") * rdms_.L3abb()("xYZuVW");
-//    rdms_.L3abb().iterate([&](const std::vector<size_t>& i, double& value) {
-//        if (abs(value) >= 1e-9) {
+
+    rdms_.L3abb().iterate([&](const std::vector<size_t>& i, double& value) {
+        std::vector<int> v1{(int)i[0], -((int)i[1])-1, -((int)i[2])-1};
+        std::vector<int> v2{(int)i[3], -((int)i[4])-1, -((int)i[5])-1};
+        std::sort(v1.begin(), v1.end());
+        std::sort(v2.begin(), v2.end());
+
+        std::vector<int> v_symDifference;
+        std::vector<int> v_diffvalues;
+        
+        std::set_symmetric_difference(
+            v1.begin(), v1.end(),
+            v2.begin(), v2.end(),
+            std::back_inserter(v_symDifference));
+        
+        for (int n : v_symDifference) {
+            v_diffvalues.push_back(n);
+        }
+        if (v_diffvalues.size() > 2) {
+            value = 0;
+        } else {
 //            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
-//        }
-//    });
+        }
+    });
+
+
+    E += 0.5 * temp.block("aAAaAA")("uVWxYZ") * rdms_.L3abb()("xYZuVW");
 
     outfile->Printf("  Done. Timing %15.6f s", timer.get());
     dsrg_time_.add("220", timer.get());
