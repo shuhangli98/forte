@@ -1391,16 +1391,18 @@ double DSRG_MRPT2::E_VT2_6() {
         }
         if (v_diffvalues.size() > 2) {
             value = 0;
+        } else {
+            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
         }
     });
 
 
     E += 0.25 * temp.block("AAAAAA")("UVWXYZ") * rdms_.L3bbb()("XYZUVW");
-    rdms_.L3bbb().iterate([&](const std::vector<size_t>& i, double& value) {
-        if (abs(value) != 0) {
-            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
-        }
-    });
+//    rdms_.L3bbb().iterate([&](const std::vector<size_t>& i, double& value) {
+//        if (abs(value) != 0) {
+//            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+//        }
+//    });
 
 
     // aab
