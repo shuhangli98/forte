@@ -1360,11 +1360,6 @@ double DSRG_MRPT2::E_VT2_6() {
 //        }
 //    });
     E += 0.25 * temp.block("aaaaaa")("uvwxyz") * rdms_.L3aaa()("xyzuvw");
-    rdms_.L3aaa().iterate([&](const std::vector<size_t>& i, double& value) {
-        if (abs(value) != 0) {
-            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
-        }
-    });
 
 
     // bbb
@@ -1376,12 +1371,37 @@ double DSRG_MRPT2::E_VT2_6() {
         temp["UVWXYZ"] += V_["UV!Z"] * T2_["!WXY"];
         temp["UVWXYZ"] += V_["W!XY"] * T2_["UV!Z"];
     }
+
+    rdms_.L3bbb().iterate([&](const std::vector<size_t>& i, double& value) {
+        std::vector<int> v1{(int)i[0], (int)i[1], (int)i[2]};
+        std::vector<int> v2{(int)i[3], (int)i[4], (int)i[5]};
+        std::sort(v1.begin(), v1.end());
+        std::sort(v2.begin(), v2.end());
+
+        std::vector<int> v_symDifference;
+        std::vector<int> v_diffvalues;
+        
+        std::set_symmetric_difference(
+            v1.begin(), v1.end(),
+            v2.begin(), v2.end(),
+            std::back_inserter(v_symDifference));
+        
+        for (int n : v_symDifference) {
+            v_diffvalues.push_back(n);
+        }
+        if (v_diffvalues.size() > 2) {
+            value = 0;
+        }
+    });
+
+
     E += 0.25 * temp.block("AAAAAA")("UVWXYZ") * rdms_.L3bbb()("XYZUVW");
-//    rdms_.L3bbb().iterate([&](const std::vector<size_t>& i, double& value) {
-//        if (abs(value) >= 1e-9) {
-//            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
-//        }
-//    });
+    rdms_.L3bbb().iterate([&](const std::vector<size_t>& i, double& value) {
+        if (abs(value) != 0) {
+            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+        }
+    });
+
 
     // aab
     temp = ambit::BlockedTensor::build(tensor_type_, "temp", {"aaAaaA"});
