@@ -1368,11 +1368,19 @@ double DSRG_MRPT2::E_VT2_6() {
         for (int n : v_symDifference) {
             v_diffvalues.push_back(n);
         }
-        if (v_diffvalues.size() > 2) {
-            value = 0;
+        if (foptions_->get_str("CU_APPROX") == "CUDS") {
+            if (v_diffvalues.size() > 2) {
+                value = 0;
+            } else {
+                cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+            }
         } else {
-//            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
-        }
+            if (v_diffvalues.size() != 0) {
+                value = 0;
+            } else {
+                cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+            }
+        }      
     });
 
 
@@ -1406,21 +1414,23 @@ double DSRG_MRPT2::E_VT2_6() {
         for (int n : v_symDifference) {
             v_diffvalues.push_back(n);
         }
-        if (v_diffvalues.size() > 2) {
-            value = 0;
+        if (foptions_->get_str("CU_APPROX") == "CUDS") {
+            if (v_diffvalues.size() > 2) {
+                value = 0;
+            } else {
+                cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+            }
         } else {
-//            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
-        }
+            if (v_diffvalues.size() != 0) {
+                value = 0;
+            } else {
+                cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+            }
+        } 
     });
 
 
     E += 0.25 * temp.block("AAAAAA")("UVWXYZ") * rdms_.L3bbb()("XYZUVW");
-//    rdms_.L3bbb().iterate([&](const std::vector<size_t>& i, double& value) {
-//        if (abs(value) != 0) {
-//            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
-//        }
-//    });
-
 
     // aab
     temp = ambit::BlockedTensor::build(tensor_type_, "temp", {"aaAaaA"});
@@ -1459,13 +1469,20 @@ double DSRG_MRPT2::E_VT2_6() {
         for (int n : v_symDifference) {
             v_diffvalues.push_back(n);
         }
-        if (v_diffvalues.size() > 2) {
-            value = 0;
+        if (foptions_->get_str("CU_APPROX") == "CUDS") {
+            if (v_diffvalues.size() > 2) {
+                value = 0;
+            } else {
+                cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+            }
         } else {
-//            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
-        }
+            if (v_diffvalues.size() != 0) {
+                value = 0;
+            } else {
+                cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+            }
+        } 
     });
-
 
     E += 0.5 * temp.block("aaAaaA")("uvWxyZ") * rdms_.L3aab()("xyZuvW");
 
@@ -1506,13 +1523,20 @@ double DSRG_MRPT2::E_VT2_6() {
         for (int n : v_symDifference) {
             v_diffvalues.push_back(n);
         }
-        if (v_diffvalues.size() > 2) {
-            value = 0;
+        if (foptions_->get_str("CU_APPROX") == "CUDS") {
+            if (v_diffvalues.size() > 2) {
+                value = 0;
+            } else {
+                cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+            }
         } else {
-//            cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
-        }
+            if (v_diffvalues.size() != 0) {
+                value = 0;
+            } else {
+                cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+            }
+        } 
     });
-
 
     E += 0.5 * temp.block("aAAaAA")("uVWxYZ") * rdms_.L3abb()("xYZuVW");
 
