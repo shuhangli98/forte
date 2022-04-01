@@ -643,7 +643,7 @@ def register_dsrg_options(options):
         "SMART_DSRG_S", "DSRG_S", ["DSRG_S", "MIN_DELTA1", "MAX_DELTA1", "DAVG_MIN_DELTA1", "DAVG_MAX_DELTA1"],
         "Automatically adjust the flow parameter according to denominators"
     )
-    options.add_str("CU_APPROX", "CUD", ["CUD", "CUDS"], "Three-body density cumulant approximation methods")
+    options.add_str("CU_APPROX", "NONE", ["CUD", "CUDS", "NONE"], "Three-body density cumulant approximation methods")
 
     options.add_bool("PRINT_TIME_PROFILE", False, "Print detailed timings in dsrg-mrpt3")
 

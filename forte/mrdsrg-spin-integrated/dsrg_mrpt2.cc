@@ -1374,12 +1374,13 @@ double DSRG_MRPT2::E_VT2_6() {
             } else {
                 cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
             }
-        } else {
+        } else if (foptions_->get_str("CU_APPROX") == "CUD") {
             if (v_diffvalues.size() != 0) {
                 value = 0;
             } else {
                 cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
             }
+        } else {
         }      
     });
 
@@ -1420,13 +1421,14 @@ double DSRG_MRPT2::E_VT2_6() {
             } else {
                 cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
             }
-        } else {
+        } else if (foptions_->get_str("CU_APPROX") == "CUD") {
             if (v_diffvalues.size() != 0) {
                 value = 0;
             } else {
                 cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
             }
-        } 
+        } else {
+        }      
     });
 
 
@@ -1475,14 +1477,16 @@ double DSRG_MRPT2::E_VT2_6() {
             } else {
                 cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
             }
-        } else {
+        } else if (foptions_->get_str("CU_APPROX") == "CUD") {
             if (v_diffvalues.size() != 0) {
                 value = 0;
             } else {
                 cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
             }
-        } 
+        } else {
+        }      
     });
+
 
     E += 0.5 * temp.block("aaAaaA")("uvWxyZ") * rdms_.L3aab()("xyZuvW");
 
@@ -1529,14 +1533,16 @@ double DSRG_MRPT2::E_VT2_6() {
             } else {
                 cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
             }
-        } else {
+        } else if (foptions_->get_str("CU_APPROX") == "CUD") {
             if (v_diffvalues.size() != 0) {
                 value = 0;
             } else {
                 cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
             }
-        } 
+        } else {
+        }      
     });
+
 
     E += 0.5 * temp.block("aAAaAA")("uVWxYZ") * rdms_.L3abb()("xYZuVW");
 
