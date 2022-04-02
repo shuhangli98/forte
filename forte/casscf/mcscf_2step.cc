@@ -45,6 +45,7 @@
 #include "gradient_tpdm/backtransform_tpdm.h"
 #include "casscf/casscf_orb_grad.h"
 #include "casscf/mcscf_2step.h"
+#include <cmath>
 
 using namespace ambit;
 
