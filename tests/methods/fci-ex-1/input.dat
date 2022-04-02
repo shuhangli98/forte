@@ -1,0 +1,56 @@
+import forte
+
+#refgs = -190.903043353085195
+#refgs = -190.903043353414034
+refgs = -190.903043353477869  # 2020-12-9 psi4@4dde4d8 after shell screening
+#refex = -190.460579061322 # NB: previous value was: -190.460579057245468
+#refex = -190.46057905898135
+refex = -190.460579059045074  # 2020-12-9 psi4@4dde4d8 after shell screening
+memory 1 gb
+
+molecule acetone {
+0   1
+H   0.000000   2.136732  -0.112445
+H   0.000000  -2.136732  -0.112445
+H  -0.881334   1.333733  -1.443842
+H   0.881334  -1.333733  -1.443842
+H  -0.881334  -1.333733  -1.443842
+H   0.881334   1.333733  -1.443842
+C   0.000000   0.000000   0.000000
+C   0.000000   1.287253  -0.795902
+C   0.000000  -1.287253  -0.795902
+O   0.000000   0.000000   1.227600
+units angstrom
+}
+
+set globals {
+  df_scf_guess     false
+  scf_type         PK
+  basis            3-21g
+  docc             [8, 1, 2, 5]
+  guess            GWH
+  reference        RHF
+  e_convergence    12
+}
+
+set forte{
+  frozen_docc      [3, 0, 0, 1]
+  restricted_docc  [4, 1, 1, 3]
+  active           [2, 0, 2, 1]
+  multiplicity      1
+  root_sym          0
+  nroot             1
+  int_type          conventional
+  active_space_solver   fci
+}
+
+energy('scf')
+gs_energy = energy('forte')
+compare_values(refgs, gs_energy, 10, "Ground state FCI energy") #TEST
+
+set forte nroot 2
+set forte root  1
+energy('scf')
+ex_energy = energy('forte')
+compare_values(refex, ex_energy, 10, "Singlet Excited State FCI energy") #TEST
+

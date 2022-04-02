@@ -1,0 +1,1084 @@
+
+    -----------------------------------------------------------------------
+          Psi4: An Open-Source Ab Initio Electronic Structure Package
+                               Psi4 undefined 
+
+                         Git: Rev {master} 3c26e8e 
+
+
+    R. M. Parrish, L. A. Burns, D. G. A. Smith, A. C. Simmonett,
+    A. E. DePrince III, E. G. Hohenstein, U. Bozkaya, A. Yu. Sokolov,
+    R. Di Remigio, R. M. Richard, J. F. Gonthier, A. M. James,
+    H. R. McAlexander, A. Kumar, M. Saitow, X. Wang, B. P. Pritchard,
+    P. Verma, H. F. Schaefer III, K. Patkowski, R. A. King, E. F. Valeev,
+    F. A. Evangelista, J. M. Turney, T. D. Crawford, and C. D. Sherrill,
+    J. Chem. Theory Comput. 13(7) pp 3185--3197 (2017).
+    (doi: 10.1021/acs.jctc.7b00174)
+
+
+                         Additional Contributions by
+    P. Kraus, H. Kruse, M. H. Lechner, M. C. Schieber, and R. A. Shaw
+
+    -----------------------------------------------------------------------
+
+
+    Psi4 started on: Thursday, 25 October 2018 03:35PM
+
+    Process ID: 91683
+    Host:       jeffschriber
+    PSIDATADIR: /Users/jeffschriber/src/psi4-debug-install/share/psi4
+    Memory:     500.0 MiB
+    Threads:    1
+    
+  ==> Input File <==
+
+--------------------------------------------------------------------------
+#! Generated using commit GITCOMMIT
+
+import forte
+
+refmcscf     =  -99.939316382624000 # cc-pVDZ
+refdsrgpt2   = -100.100858040813449 # cc-pVDZ
+
+memory 500 mb
+
+molecule HF{
+  0 1
+  F
+  H  1 R
+  R = 1.50
+}
+
+set globals{
+   basis                  cc-pvdz
+   reference              twocon
+   scf_type               pk
+   d_convergence          12
+   cholesky_tolerance     14
+   e_convergence          15
+}
+
+set mcscf{
+   docc                   [2,0,1,1]
+   socc                   [2,0,0,0]
+   maxiter                1000
+   level_shift            2.0
+}
+
+set forte{
+   job_type               three-dsrg-mrpt2
+   frozen_docc            [1,0,0,0]
+   restricted_docc        [1,0,1,1]
+   active                 [2,0,0,0]
+   root_sym               0
+   nroot                  1
+   dsrg_s                 1.0
+   int_type               cholesky
+   cholesky_tolerance     1e-14
+   PRINT_DENOM2            true
+   cas_type fci
+}
+
+refmcscf, refwfn = energy('mcscf', return_wfn=True)
+compare_values(refmcscf,get_variable("CURRENT ENERGY"),10,"MCSCF energy")
+
+energy('forte', ref_wfn = refwfn )
+compare_values(refdsrgpt2,get_variable("CURRENT ENERGY"),10,"DSRG-MRPT2 energy")
+--------------------------------------------------------------------------
+
+  Memory set to 476.837 MiB by Python driver.
+   => Loading Basis Set <=
+
+    Name: CC-PVDZ
+    Role: ORBITAL
+    Keyword: BASIS
+    atoms 1 entry F          line   228 file /Users/jeffschriber/src/psi4-debug-install/share/psi4/basis/cc-pvdz.gbs 
+    atoms 2 entry H          line    22 file /Users/jeffschriber/src/psi4-debug-install/share/psi4/basis/cc-pvdz.gbs 
+
+
+*** tstart() called on jeffschriber
+*** at Thu Oct 25 15:35:24 2018
+
+
+         ------------------------------------------
+           MCSCF: a self-consistent field program
+            written by Francesco A. Evangelista
+         ------------------------------------------
+
+  MOs per irrep:                                      A1  A2  B1  B2 Total
+  ----------------------------------------------------------------------------
+  Total                                               10    1    4    4    19
+  Doubly Occupied                                      2    0    1    1     4
+  Active/Singly Occupied                               2    0    0    0     2
+  ----------------------------------------------------------------------------
+
+  Running an SCF calculation
+  TWOCON MOs = [2 (A1),3 (A1)]
+
+  Generated 190 pairs
+  Distributed as [76 A1][26 A2][44 B1][44 B2]
+  batch   0 pq = [       0,      76] index = [               0,            2926]
+
+  Allocated the PK matrix (2926 elements) 
+  Allocated the  K matrix (2926 elements) 
+  Reading the two-electron integrals to form PK and K ... 
+  batch   0 ... done.
+
+
+  =========================================================================================
+         Cycle          Energy               D(Energy)            D(Density)            DIIS
+  ===========================================================================================
+  Setting level shift to 2.000 S
+  @SCF    0      -93.745779861830     -93.745779861830       0.147704439122
+    ci      = [ 0.00000000, 0.00000000]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S
+  @SCF    1      -98.407782359801      -4.662002497971       0.112176394078
+    ci      = [ 0.00000000, 0.00000000]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S
+  @SCF    2      -99.045950767877      -0.638168408076       0.012062093536
+    ci      = [ 0.00000000, 0.00000000]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S
+  @SCF    3      -99.190856102527      -0.144905334651       0.006982186296
+    ci      = [ 0.00000000, 0.00000000]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S
+  @SCF    4      -99.311765386428      -0.120909283901       0.003873591300
+    ci      = [ 0.00000000, 0.00000000]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S
+  @SCF    5      -99.308291617222       0.003473769207       0.003339676114
+    ci      = [ 0.00000000, 0.00000000]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S
+  @SCF    6      -99.350335014089      -0.042043396868       0.002567518204
+    ci      = [ 0.00000000, 0.00000000]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF    7      -99.331068894836       0.019266119253       0.002394972987
+    ci      = [ 0.00000000, 0.00000000]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF    8      -99.347485506357      -0.016416611520       0.001068005391
+    ci      = [ 0.00000000, 0.00000000]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF    9      -99.347734755047      -0.000249248690       0.000035713055
+    ci      = [ 0.00000000, 0.00000000]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF   10      -99.347678223614       0.000056531433       0.000006556322
+    ci      = [ 0.00000000, 0.00000000]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF   11      -99.347685083887      -0.000006860273       0.000001943966
+    ci      = [-0.98717288, 0.15965494]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF   12      -99.347677527512       0.000007556375       0.000001656043
+    ci      = [-0.98717320, 0.15965296]
+    ci_grad = [-0.00000713, 0.00000322]
+  Setting level shift to 2.000 S/E
+  @SCF   13      -99.347667999763       0.000009527749       0.000000292686
+    ci      = [-0.98717313, 0.15965342]
+    ci_grad = [-0.00000948, 0.00000105]
+  Setting level shift to 2.000 S/E
+  @SCF   14      -99.347681310531      -0.000013310769       0.000000496264
+    ci      = [-0.98717313, 0.15965342]
+    ci_grad = [ 0.00001329,-0.00000120]
+  Setting level shift to 2.000 S/E
+  @SCF   15      -99.347684904290      -0.000003593759       0.000000407238
+    ci      = [-0.98717325, 0.15965269]
+    ci_grad = [ 0.00000367, 0.00000017]
+  Setting level shift to 2.000 S/E
+  @SCF   16      -99.347674645425       0.000010258865       0.000000525875
+    ci      = [-0.98717325, 0.15965269]
+    ci_grad = [-0.00001026, 0.00000080]
+  Setting level shift to 2.000 S/E
+  @SCF   17      -99.347691671376      -0.000017025951       0.000001810948
+    ci      = [-0.98717325, 0.15965269]
+    ci_grad = [ 0.00001605,-0.00000740]
+  Setting level shift to 2.000 S/E
+  @SCF   18      -99.347693577584      -0.000001906208       0.000001051391
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [ 0.00000151,-0.00000263]
+  Setting level shift to 2.000 S/E
+  @SCF   19      -99.858738980540      -0.511045402956       0.030751383071
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [ 0.50751523,-0.06077328]
+  Setting level shift to 2.000 S/E
+  @SCF   20      -99.890300101546      -0.031561121006       0.008960408168
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [ 0.03620090, 0.03302878]
+  Setting level shift to 2.000 S/E
+  @SCF   21      -99.899087745260      -0.008787643715       0.004542215485
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [ 0.01087946, 0.01329007]
+  Setting level shift to 2.000 S/E
+  @SCF   22      -99.903118225738      -0.004030480477       0.002483322024
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [ 0.00450115, 0.00264122]
+  Setting level shift to 2.000 S/E
+  @SCF   23      -99.908511711938      -0.005393486201       0.004036976633
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [ 0.00222910,-0.01835775]
+  Setting level shift to 2.000 S/E
+  @SCF   24      -99.914108769419      -0.005597057481       0.004741451044
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.00182722,-0.03840462]
+  Setting level shift to 2.000 S/E
+  @SCF   25      -99.916510657693      -0.002401888274       0.002210882744
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.00663765,-0.04472954]
+  Setting level shift to 2.000 S/E
+  @SCF   26      -99.922894683893      -0.006384026200       0.006733425324
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.00767274,-0.06362108]
+  Setting level shift to 2.000 S/E
+  @SCF   27      -99.924998608930      -0.002103925037       0.002524158367
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.01355723,-0.06837759]
+  Setting level shift to 2.000 S/E
+  @SCF   28      -99.928238306337      -0.003239697407       0.005487565628
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.01491791,-0.07626942]
+  Setting level shift to 2.000 S/E
+  @SCF   29      -99.929845956400      -0.001607650063       0.003314982043
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.01790186,-0.08001430]
+  Setting level shift to 2.000 S/E
+  @SCF   30      -99.932112617916      -0.002266661517       0.003307635826
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.01937306,-0.08584094]
+  Setting level shift to 2.000 S/E
+  @SCF   31      -99.932440092196      -0.000327474280       0.001501432376
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.02161029,-0.08643705]
+  Setting level shift to 2.000 S/E
+  @SCF   32      -99.934209953406      -0.001769861210       0.003068344915
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.02189127,-0.09091003]
+  Setting level shift to 2.000 S/E
+  @SCF   33      -99.934719746747      -0.000509793341       0.001492179408
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.02367555,-0.09203405]
+  Setting level shift to 2.000 S/E
+  @SCF   34      -99.935065567935      -0.000345821188       0.000757987629
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.02423041,-0.09289376]
+  Setting level shift to 2.000 S/E
+  @SCF   35      -99.935110233756      -0.000044665821       0.000601532723
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.02457484,-0.09297657]
+  Setting level shift to 2.000 S/E
+  @SCF   36      -99.935210958519      -0.000100724763       0.000297807872
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.02463587,-0.09322923]
+  Setting level shift to 2.000 S/E
+  @SCF   37      -99.935264238185      -0.000053279666       0.000107235596
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.02475355,-0.09337861]
+  Setting level shift to 2.000 S/E
+  @SCF   38      -99.935351188035      -0.000086949850       0.000288871183
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.02482701,-0.09361327]
+  Setting level shift to 2.000 S/E
+  @SCF   39      -99.935469064801      -0.000117876766       0.000311707580
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.02495041,-0.09394374]
+  Setting level shift to 2.000 S/E
+  @SCF   40      -99.935563084703      -0.000094019902       0.000266720138
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.02510012,-0.09420803]
+  Setting level shift to 2.000 S/E
+  @SCF   41      -99.935643129735      -0.000080045031       0.000278498334
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.02522045,-0.09442582]
+  Setting level shift to 2.000 S/E
+  @SCF   42      -99.935675468654      -0.000032338920       0.000143438932
+    ci      = [-0.98717288, 0.15965498]
+    ci_grad = [-0.02531089,-0.09450998]
+  Setting level shift to 2.000 S/E
+  @SCF   43      -99.935676802892      -0.000001334237       0.000128723182
+    ci      = [-0.96587647, 0.25900316]
+    ci_grad = [-0.02534032,-0.09450442]
+  Setting level shift to 2.000 S/E
+  @SCF   44      -99.935700778389      -0.000023975498       0.000251257436
+    ci      = [-0.96587647, 0.25900316]
+    ci_grad = [-0.00000698,-0.00011856]
+  Setting level shift to 2.000 S/E
+  @SCF   45      -99.935683864662       0.000016913727       0.000051572203
+    ci      = [-0.96587647, 0.25900316]
+    ci_grad = [-0.00002221,-0.00001753]
+  Setting level shift to 2.000 S/E
+  @SCF   46      -99.935673491182       0.000010373481       0.000059916035
+    ci      = [-0.96587647, 0.25900316]
+    ci_grad = [ 0.00000255, 0.00004958]
+  Setting level shift to 2.000 S/E
+  @SCF   47      -99.935787816817      -0.000114325636       0.000367304788
+    ci      = [-0.96587647, 0.25900316]
+    ci_grad = [-0.00004209,-0.00059700]
+  Setting level shift to 2.000 S/E
+  @SCF   48      -99.935788738877      -0.000000922060       0.000042168141
+    ci      = [-0.96571754, 0.25959515]
+    ci_grad = [-0.00015225,-0.00056995]
+  Setting level shift to 2.000 S/E
+  @SCF   49      -99.935773142173       0.000015596705       0.000061450909
+    ci      = [-0.96571754, 0.25959515]
+    ci_grad = [ 0.00000862, 0.00009219]
+  Setting level shift to 2.000 S/E
+  @SCF   50      -99.935777500941      -0.000004358768       0.000028683898
+    ci      = [-0.96573452, 0.25953194]
+    ci_grad = [ 0.00002056, 0.00005972]
+  Setting level shift to 2.000 S/E
+  @SCF   51      -99.937225659563      -0.001448158622       0.003490649032
+    ci      = [-0.96573452, 0.25953194]
+    ci_grad = [-0.00176902,-0.01159975]
+  Setting level shift to 2.000 S/E
+  @SCF   52      -99.937466876445      -0.000241216882       0.001373531712
+    ci      = [-0.96573452, 0.25953194]
+    ci_grad = [-0.00287984,-0.01109926]
+  Setting level shift to 2.000 S/E
+  @SCF   53      -99.937667808722      -0.000200932277       0.000397934349
+    ci      = [-0.96573452, 0.25953194]
+    ci_grad = [-0.00338539,-0.01265440]
+  Setting level shift to 2.000 S/E
+  @SCF   54      -99.938378361960      -0.000710553238       0.001565909950
+    ci      = [-0.96573452, 0.25953194]
+    ci_grad = [-0.00473000,-0.01873828]
+  Setting level shift to 2.000 S/E
+  @SCF   55      -99.938709391377      -0.000331029417       0.001110717358
+    ci      = [-0.96573452, 0.25953194]
+    ci_grad = [-0.00588476,-0.02108609]
+  Setting level shift to 2.000 S/E
+  @SCF   56      -99.938847124051      -0.000137732674       0.000468672716
+    ci      = [-0.96573452, 0.25953194]
+    ci_grad = [-0.00655368,-0.02250743]
+  Setting level shift to 2.000 S/E
+  @SCF   57      -99.939030390760      -0.000183266708       0.000965632639
+    ci      = [-0.96573452, 0.25953194]
+    ci_grad = [-0.00710140,-0.02428580]
+  Setting level shift to 2.000 S/E
+  @SCF   58      -99.939059663852      -0.000029273092       0.000470316090
+    ci      = [-0.96573452, 0.25953194]
+    ci_grad = [-0.00733638,-0.02449380]
+  Setting level shift to 2.000 S/E
+  @SCF   59      -99.939076399881      -0.000016736029       0.000121304018
+    ci      = [-0.96573452, 0.25953194]
+    ci_grad = [-0.00742319,-0.02471084]
+  Setting level shift to 2.000 S/E
+  @SCF   60      -99.939082350509      -0.000005950627       0.000058502077
+    ci      = [-0.95750499, 0.28841670]
+    ci_grad = [-0.00745777,-0.02477943]
+  Setting level shift to 2.000 S/E
+  @SCF   61      -99.939089728202      -0.000007377693       0.000170965043
+    ci      = [-0.95747208, 0.28852593]
+    ci_grad = [-0.00002128,-0.00009619]
+  Setting level shift to 2.000 S/E
+  @SCF   62      -99.939084785821       0.000004942381       0.000034837038
+    ci      = [-0.95750006, 0.28843305]
+    ci_grad = [ 0.00001937, 0.00008144]
+  Setting level shift to 2.000 S/E
+  @SCF   63      -99.939103397107      -0.000018611286       0.000116932565
+    ci      = [-0.95750006, 0.28843305]
+    ci_grad = [-0.00007426,-0.00031064]
+  Setting level shift to 2.000 S/E
+  @SCF   64      -99.939125876753      -0.000022479646       0.000142069731
+    ci      = [-0.95750006, 0.28843305]
+    ci_grad = [-0.00019286,-0.00071594]
+  Setting level shift to 2.000 S/E
+  @SCF   65      -99.939085655906       0.000040220847       0.000237358587
+    ci      = [-0.95750006, 0.28843305]
+    ci_grad = [-0.00004083, 0.00000391]
+  Setting level shift to 2.000 S/E
+  @SCF   66      -99.939101316893      -0.000015660987       0.000081637106
+    ci      = [-0.95750006, 0.28843305]
+    ci_grad = [-0.00006606,-0.00027328]
+  Setting level shift to 2.000 S/E
+  @SCF   67      -99.939105052959      -0.000003736066       0.000015471688
+    ci      = [-0.95738361, 0.28881938]
+    ci_grad = [-0.00009668,-0.00033340]
+  Setting level shift to 2.000 S/E
+  @SCF   68      -99.939299783940      -0.000194730981       0.001519728129
+    ci      = [-0.95738361, 0.28881938]
+    ci_grad = [-0.00136863,-0.00509657]
+  Setting level shift to 2.000 S/E
+  @SCF   69      -99.939306560425      -0.000006776485       0.000122892999
+    ci      = [-0.95538067, 0.29537733]
+    ci_grad = [-0.00169589,-0.00550820]
+  Setting level shift to 2.000 S/E
+  @SCF   70      -99.939306475810       0.000000084614       0.000051812395
+    ci      = [-0.95540922, 0.29528499]
+    ci_grad = [ 0.00002392, 0.00007769]
+  Setting level shift to 2.000 S/E
+  @SCF   71      -99.939314550165      -0.000008074355       0.000259865969
+    ci      = [-0.95506592, 0.29639348]
+    ci_grad = [-0.00028049,-0.00093107]
+  Setting level shift to 2.000 S/E
+  @SCF   72      -99.939310721539       0.000003828625       0.000212827313
+    ci      = [-0.95529190, 0.29566432]
+    ci_grad = [ 0.00018597, 0.00061382]
+  Setting level shift to 2.000 S/E
+  @SCF   73      -99.939312482779      -0.000001761240       0.000050963310
+    ci      = [-0.95523024, 0.29586345]
+    ci_grad = [-0.00005010,-0.00016770]
+  Setting level shift to 2.000 S/E
+  @SCF   74      -99.939315309868      -0.000002827088       0.000120818158
+    ci      = [-0.95507052, 0.29637865]
+    ci_grad = [-0.00013128,-0.00043258]
+  Setting level shift to 2.000 S/E
+  @SCF   75      -99.939316254461      -0.000000944593       0.000089937541
+    ci      = [-0.95495266, 0.29675819]
+    ci_grad = [-0.00009781,-0.00031793]
+  Setting level shift to 2.000 S/E
+  @SCF   76      -99.939316339994      -0.000000085533       0.000023672792
+    ci      = [-0.95492200, 0.29685684]
+    ci_grad = [-0.00002558,-0.00008256]
+  Setting level shift to 2.000 S/E
+  @SCF   77      -99.939316362527      -0.000000022533       0.000016582579
+    ci      = [-0.95490251, 0.29691950]
+    ci_grad = [-0.00001628,-0.00005243]
+  Setting level shift to 2.000 S/E
+  @SCF   78      -99.939316355496       0.000000007031       0.000023820630
+    ci      = [-0.95487787, 0.29699876]
+    ci_grad = [-0.00002062,-0.00006627]
+  Setting level shift to 2.000 S/E
+  @SCF   79      -99.939316372607      -0.000000017110       0.000027912075
+    ci      = [-0.95491699, 0.29687295]
+    ci_grad = [ 0.00003274, 0.00010525]
+  Setting level shift to 2.000 S/E
+  @SCF   80      -99.939316379833      -0.000000007226       0.000017723477
+    ci      = [-0.95489444, 0.29694546]
+    ci_grad = [-0.00001885,-0.00006065]
+  Setting level shift to 2.000 S/E
+  @SCF   81      -99.939316382115      -0.000000002282       0.000004036245
+    ci      = [-0.95490042, 0.29692622]
+    ci_grad = [ 0.00000501, 0.00001610]
+  Setting level shift to 2.000 S/E
+  @SCF   82      -99.939316382350      -0.000000000235       0.000001037607
+    ci      = [-0.95490180, 0.29692179]
+    ci_grad = [ 0.00000115, 0.00000370]
+  Setting level shift to 2.000 S/E
+  @SCF   83      -99.939316382464      -0.000000000115       0.000001222238
+    ci      = [-0.95490104, 0.29692424]
+    ci_grad = [-0.00000064,-0.00000205]
+  Setting level shift to 2.000 S/E
+  @SCF   84      -99.939316382494      -0.000000000030       0.000001679409
+    ci      = [-0.95490350, 0.29691634]
+    ci_grad = [ 0.00000205, 0.00000661]
+  Setting level shift to 2.000 S/E
+  @SCF   85      -99.939316382592      -0.000000000098       0.000000887931
+    ci      = [-0.95490257, 0.29691932]
+    ci_grad = [-0.00000078,-0.00000249]
+  Setting level shift to 2.000 S/E
+  @SCF   86      -99.939316382613      -0.000000000021       0.000000386600
+    ci      = [-0.95490216, 0.29692064]
+    ci_grad = [-0.00000034,-0.00000111]
+  Setting level shift to 2.000 S/E
+  @SCF   87      -99.939316382621      -0.000000000008       0.000000536270
+    ci      = [-0.95490166, 0.29692224]
+    ci_grad = [-0.00000042,-0.00000134]
+  Setting level shift to 2.000 S/E
+  @SCF   88      -99.939316382622      -0.000000000000       0.000000031114
+    ci      = [-0.95490168, 0.29692217]
+    ci_grad = [ 0.00000002, 0.00000006]
+  Setting level shift to 2.000 S/E
+  @SCF   89      -99.939316382623      -0.000000000002       0.000000089903
+    ci      = [-0.95490166, 0.29692223]
+    ci_grad = [-0.00000002,-0.00000005]
+  Setting level shift to 2.000 S/E
+  @SCF   90      -99.939316382624      -0.000000000001       0.000000062951
+    ci      = [-0.95490167, 0.29692223]
+    ci_grad = [ 0.00000000, 0.00000001]
+  Setting level shift to 2.000 S/E
+  @SCF   91      -99.939316382624      -0.000000000000       0.000000051378
+    ci      = [-0.95490170, 0.29692211]
+    ci_grad = [ 0.00000003, 0.00000010]
+  Setting level shift to 2.000 S/E
+  @SCF   92      -99.939316382624      -0.000000000000       0.000000024235
+    ci      = [-0.95490170, 0.29692211]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF   93      -99.939316382624      -0.000000000000       0.000000028484
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000001, 0.00000003]
+  Setting level shift to 2.000 S/E
+  @SCF   94      -99.939316382624      -0.000000000000       0.000000009761
+    ci      = [-0.95490170, 0.29692212]
+    ci_grad = [-0.00000001,-0.00000003]
+  Setting level shift to 2.000 S/E
+  @SCF   95      -99.939316382624       0.000000000000       0.000000009044
+    ci      = [-0.95490171, 0.29692209]
+    ci_grad = [ 0.00000001, 0.00000003]
+  Setting level shift to 2.000 S/E
+  @SCF   96      -99.939316382624      -0.000000000000       0.000000006697
+    ci      = [-0.95490170, 0.29692211]
+    ci_grad = [-0.00000000,-0.00000002]
+  Setting level shift to 2.000 S/E
+  @SCF   97      -99.939316382624      -0.000000000000       0.000000007812
+    ci      = [-0.95490171, 0.29692209]
+    ci_grad = [ 0.00000000, 0.00000002]
+  Setting level shift to 2.000 S/E
+  @SCF   98      -99.939316382624       0.000000000000       0.000000001955
+    ci      = [-0.95490171, 0.29692209]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF   99      -99.939316382624       0.000000000000       0.000000001885
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  100      -99.939316382624       0.000000000000       0.000000001346
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  101      -99.939316382624      -0.000000000000       0.000000000197
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  102      -99.939316382624      -0.000000000000       0.000000000196
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  103      -99.939316382624       0.000000000000       0.000000000210
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  104      -99.939316382624       0.000000000000       0.000000000173
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  105      -99.939316382624      -0.000000000000       0.000000000228
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  106      -99.939316382624       0.000000000000       0.000000000105
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  107      -99.939316382624      -0.000000000000       0.000000000053
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  108      -99.939316382624       0.000000000000       0.000000000055
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  109      -99.939316382624      -0.000000000000       0.000000000017
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  110      -99.939316382624      -0.000000000000       0.000000000013
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  111      -99.939316382624       0.000000000000       0.000000000020
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  112      -99.939316382624       0.000000000000       0.000000000012
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  113      -99.939316382624      -0.000000000000       0.000000000007
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  114      -99.939316382624       0.000000000000       0.000000000004
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  115      -99.939316382624       0.000000000000       0.000000000005
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  116      -99.939316382624      -0.000000000000       0.000000000002
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  117      -99.939316382624       0.000000000000       0.000000000002
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  118      -99.939316382624      -0.000000000000       0.000000000001
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  119      -99.939316382624       0.000000000000       0.000000000003
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  120      -99.939316382624       0.000000000000       0.000000000001
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  121      -99.939316382624      -0.000000000000       0.000000000001
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  122      -99.939316382624      -0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  123      -99.939316382624       0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  124      -99.939316382624      -0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  125      -99.939316382624       0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  126      -99.939316382624      -0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  127      -99.939316382624       0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  128      -99.939316382624      -0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  129      -99.939316382624       0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  130      -99.939316382624      -0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  131      -99.939316382624       0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  132      -99.939316382624       0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  133      -99.939316382624       0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  134      -99.939316382624      -0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  135      -99.939316382624       0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  136      -99.939316382624      -0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  137      -99.939316382624       0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  138      -99.939316382624       0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  139      -99.939316382624      -0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  140      -99.939316382624       0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  141      -99.939316382624      -0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  142      -99.939316382624      -0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  143      -99.939316382624      -0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [ 0.00000000,-0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  144      -99.939316382624       0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000, 0.00000000]
+  Setting level shift to 2.000 S/E
+  @SCF  145      -99.939316382624       0.000000000000       0.000000000000
+    ci      = [-0.95490171, 0.29692208]
+    ci_grad = [-0.00000000,-0.00000000]
+  =========================================================================================
+
+      * SCF total energy   =     -99.939316382624
+
+
+      CI coefficients  = [-0.954901713, 0.296922076]
+
+  End of SCF
+  MOs orthonormality check passed.
+
+  Orbitals are canonicalized as:
+  inactive (docc + uocc) : Fock(core)
+  active   (actv)        : Fock(core)
+
+  =========================================================================
+  Eigenvalues (Eh)
+  -------------------------------------------------------------------------
+  Doubly occupied orbitals
+      1    -26.322903  A1      2     -1.519005  A1      3     -0.638631  B1
+      4     -0.638631  B2
+  Active orbitals
+      5     -0.537968  A1      6      0.087068  A1
+  Unoccupied orbitals
+      7      2.558369  A1      8      3.324242  B2      9      3.324242  B1
+     10      3.444927  A1     11      3.586079  A1     12      3.602014  B2
+     13      3.602014  B1     14      4.287527  A1     15      5.991409  B2
+     16      5.991409  B1     17      5.995163  A1     18      5.995163  A2
+     19      6.177516  A1
+  =========================================================================
+
+
+  MCSCF Execution Completed.
+
+
+*** tstop() called on jeffschriber at Thu Oct 25 15:35:24 2018
+Module time:
+	user time   =       0.14 seconds =       0.00 minutes
+	system time =       0.04 seconds =       0.00 minutes
+	total time  =          0 seconds =       0.00 minutes
+Total time:
+	user time   =       0.14 seconds =       0.00 minutes
+	system time =       0.04 seconds =       0.00 minutes
+	total time  =          0 seconds =       0.00 minutes
+	MCSCF energy......................................................PASSED
+   => Loading Basis Set <=
+
+    Name: STO-3G
+    Role: ORBITAL
+    Keyword: MINAO_BASIS
+    atoms 1 entry F          line    91 file /Users/jeffschriber/src/psi4-debug-install/share/psi4/basis/sto-3g.gbs 
+    atoms 2 entry H          line    19 file /Users/jeffschriber/src/psi4-debug-install/share/psi4/basis/sto-3g.gbs 
+
+
+Reading options from the FORTE block
+Calling plugin forte.so.
+
+
+
+  Forte
+  ----------------------------------------------------------------------------
+  A suite of quantum chemistry methods for strongly correlated electrons
+
+    git branch: master - git commit: 9480afcf
+
+  Developed by:
+    Francesco A. Evangelista, Chenyang Li, Kevin P. Hannon,
+    Jeffrey B. Schriber, Tianyuan Zhang, Chenxi Cai
+  ----------------------------------------------------------------------------
+
+  Size of Determinant class: 16
+
+  ==> MO Space Information <==
+
+  Read options for space FROZEN_DOCC
+  Read options for space RESTRICTED_DOCC
+  Read options for space ACTIVE
+  -------------------------------------------------
+                       A1    A2    B1    B2   Sum
+  -------------------------------------------------
+    FROZEN_DOCC         1     0     0     0     1
+    RESTRICTED_DOCC     1     0     1     1     3
+    ACTIVE              2     0     0     0     2
+    RESTRICTED_UOCC     6     1     3     3    13
+    FROZEN_UOCC         0     0     0     0     0
+    Total              10     1     4     4    19
+  -------------------------------------------------
+
+  ==> Integral Transformation <==
+
+  Number of molecular orbitals:                    19
+  Number of correlated molecular orbitals:         18
+  Number of frozen occupied orbitals:               1
+  Number of frozen unoccupied orbitals:             0
+  Two-electron integral type:              Cholesky decomposition
+
+
+  Computing the Cholesky Vectors 
+
+  Computing CD Integrals               ......Done.
+  Timing for cholesky transformation:                         0.133 s.
+  Need 502.51 KB to store CD integrals in core
+
+  Number of Cholesky vectors required for 1.000e-14 tolerance: 174
+  Using in-core PK algorithm.
+   Calculation information:
+      Number of atoms:                   2
+      Number of AO shells:               9
+      Number of primitives:             27
+      Number of atomic orbitals:        20
+      Number of basis functions:        19
+
+      Integral cutoff                 1.00e-12
+      Number of threads:                 1
+
+  Performing in-core PK
+  Using 36290 doubles for integral storage.
+  We computed 1035 shell quartets total.
+  Whereas there are 1035 unique shell quartets.
+
+
+  Frozen-core energy            -76.183127628697 a.u.
+  Timing for frozen one-body operator:                        0.075 s.
+  Resorting integrals after freezing core.
+  Timing for freezing core and virtual orbitals:              0.077 s.
+  Timing for computing Cholesky integrals:                    0.228 s.
+
+                -----------------------------------------------
+                  String-based Full Configuration Interaction
+                          by Francesco A. Evangelista
+                -----------------------------------------------
+
+  Number of electrons: 10
+  Charge: 0
+  Multiplicity: 1
+  Davidson subspace max dim: 8
+  Davidson subspace min dim: 2
+  M_s: 0
+
+  ==> String Lists <==
+
+  Number of alpha electrons     = 1
+  Number of beta electrons      = 1
+  Number of alpha strings       = 2
+  Number of beta strings        = 2
+  Timing for strings        =      0.001 s
+  Timing for NN strings     =      0.001 s
+  Timing for VO strings     =      0.000 s
+  Timing for OO strings     =      0.000 s
+  Timing for VVOO strings   =      0.000 s
+  Timing for VOVO strings   =      0.000 s
+  Timing for 1-hole strings =      0.000 s
+  Timing for 2-hole strings =      0.000 s
+  Timing for 3-hole strings =      0.000 s
+  Total timing              =      0.003 s
+
+  ==> FCI Solver <==
+
+    Number of determinants                           4
+    Symmetry                                         0
+    Multiplicity                                     1
+    Number of roots                                  1
+    Target root                                      0
+    Trial vectors per root                          10
+
+  Allocating memory for the Hamiltonian algorithm. Size: 2 x 2 x 2.   Memory: 0.000000 GB
+
+  ==> FCI Initial Guess <==
+
+  ---------------------------------------------
+    Root            Energy     <S^2>   Spin
+  ---------------------------------------------
+      0      -99.939316382624  0.000  singlet
+      1      -99.781106407668  2.000  triplet
+      2      -99.379727621976  0.000  singlet
+      3      -99.029885655112  0.000  singlet
+  ---------------------------------------------
+  Timing for initial guess  =      0.005 s
+
+  Projecting out root 1
+  ==> Diagonalizing Hamiltonian <==
+
+  ----------------------------------------
+    Iter.      Avg. Energy       Delta_E
+  ----------------------------------------
+      1      -99.939316382624  -9.994e+01
+      2      -99.939316382624  +0.000e+00
+  ----------------------------------------
+  The Davidson-Liu algorithm converged in 3 iterations.
+
+  ==> Root No. 0 <==
+
+    20      0.95490171
+    02     -0.29692208
+
+    Total Energy:       -99.939316382624185
+
+  ==> Computing RDMs for Root No. 0 <==
+
+    Timing for 1-RDM: 0.000 s
+    Timing for 2-RDM: 0.000 s
+    Timing for 3-RDM: 0.000 s
+
+  ==> NATURAL ORBITALS <==
+
+        1A1     1.823675      2A1     0.176325  
+
+
+       -----------------------------------------------------------------
+                            Semi-Canonical Orbitals
+         Chenyang Li, Jeffrey B. Schriber and Francesco A. Evangelista
+       -----------------------------------------------------------------
+
+  Took 0.002967 s to build Fock matrix
+
+  ==> Checking Fock Matrix Diagonal Blocks <==
+
+    Off-Diag. Elements       Max           2-Norm
+    ------------------------------------------------
+    Fa actv              0.0356704692   0.0504456613
+    Fb actv              0.0356704692   0.0504456613
+    ------------------------------------------------
+    Fa core              0.0000000000   0.0000000000
+    Fb core              0.0000000000   0.0000000000
+    ------------------------------------------------
+    Fa virt              0.0000000000   0.0000000000
+    Fb virt              0.0000000000   0.0000000000
+    ------------------------------------------------
+
+  ==> Integral Transformation to Semicanonical Basis <==
+
+ Integrals are about to be computed.
+  Computing the Cholesky Vectors 
+
+  Computing CD Integrals               ......Done.
+  Timing for cholesky transformation:                         0.125 s.
+  Need 502.51 KB to store CD integrals in core
+
+  Number of Cholesky vectors required for 1.000e-14 tolerance: 174
+
+ Integrals are about to be updated.  Using in-core PK algorithm.
+   Calculation information:
+      Number of atoms:                   2
+      Number of AO shells:               9
+      Number of primitives:             27
+      Number of atomic orbitals:        20
+      Number of basis functions:        19
+
+      Integral cutoff                 1.00e-12
+      Number of threads:                 1
+
+  Performing in-core PK
+  Using 36290 doubles for integral storage.
+  We computed 1035 shell quartets total.
+  Whereas there are 1035 unique shell quartets.
+
+
+  Frozen-core energy            -76.183127628697 a.u.
+  Timing for frozen one-body operator:                        0.065 s.
+  Resorting integrals after freezing core.
+  Timing for freezing core and virtual orbitals:              0.067 s.
+
+  ==> Reference Transformation to Semicanonical Basis <==
+
+    Transformed 1 cumulants.
+    Transformed 2 cumulants and RDMs.
+    Transformed 3 cumulants.
+  SemiCanonicalize takes 0.516909 s.
+
+  ==> Multireference Driven Similarity Renormalization Group <==
+
+    Reading DSRG options ............................ Done
+    Setting ambit MO space .......................... Done
+    Preparing tensors for density cumulants ......... Done
+    Building Fock matrix ............................ Done
+    Checking reference energy ....................... Done
+
+                  --------------------------------------------
+                      Density Fitted / Cholesky Decomposed
+                    MR-DSRG Second-Order Perturbation Theory
+                      Kevin Hannon and Chenyang (York) Li
+                                 1 thread (OMP)
+                  --------------------------------------------
+
+    References:
+      u-DSRG-MRPT2:      J. Chem. Theory Comput. 2015, 11, 2097.
+      DF/CD-DSRG-MRPT2:  J. Chem. Phys. 2016, 144, 204111.
+      (pr-)DSRG-MRPT2:   J. Chem. Phys. 2017, 146, 124132.
+
+
+  ==> Calculation Information <==
+
+    Flow parameter                                 1.000e+00
+    Taylor expansion threshold                     1.000e-03
+    Cholesky tolerance                             1.000e-14
+    Psi4 ref_type                                     TWOCON
+    Integral type                                   CHOLESKY
+    Source operator                                 STANDARD
+    CCVV algorithm                                 FLY_AMBIT
+    CCVV source                                       NORMAL
+    Reference relaxation                                NONE
+    State type                                STATE-SPECIFIC
+
+  ==> Checking Semicanonical Orbitals <==
+
+    Abs. max of Fock core, active, virtual blocks (Fij, i != j)
+                  core          active         virtual
+    --------------------------------------------------
+    Fα    0.0000000000    0.0000000000    0.0000000000
+    Fβ    0.0000000000    0.0000000000    0.0000000000
+    --------------------------------------------------
+
+    1-Norm of Fock core, active, virtual blocks (Fij, i != j)
+                  core          active         virtual
+    --------------------------------------------------
+    Fα    0.0000000000    0.0000000000    0.0000000000
+    Fβ    0.0000000000    0.0000000000    0.0000000000
+    --------------------------------------------------
+
+    Orbitals are semi-canonicalized.
+
+  ==> Computing DSRG-MRPT2 Energy <==
+
+  Reference Energy = -99.939316382624185
+    Computing T2                             ...... Done. Timing        0.003823 s
+    Renormalizing V                          ...... Done. Timing        0.001190 s
+    Computing T1                             ...... Done. Timing        0.002158 s
+    Renormalizing F                          ...... Done. Timing        0.001999 s
+    Computing <[F, T1]>                      ...... Done. Timing        0.001896 s
+    Computing <[F, T2]>                      ...... Done. Timing        0.001695 s
+    Computing <[V, T1]>                      ...... Done. Timing        0.002567 s
+    Computing <[V, T2]> 4HH                  ...... Done. Timing        0.002865 s
+    Computing <V, T2]> 4PP                   ...... Done. Timing        0.002963 s
+    Computing [V, T2] 4PH                    ...... Done. Timing        0.010425 s
+    Computing [V, T2] λ3                     ...... Done. Timing        0.006558 s
+    Computing <[V, T2]> (C_2)^4 (no ccvv)    ...... Done. Timing        0.009291 s
+    Computing <[V, T2]> (C_2)^4 ccvv         ...... Done. Timing        0.004967 s
+  Eccvv: -0.0922333411
+
+  ==> DSRG-MRPT2 (DF/CD) Energy Summary <==
+
+    E0 (reference)                 =    -99.939316382624185
+    <[F, T1]>                      =     -0.013714946660858
+    <[F, T2]>                      =      0.012639782859797
+    <[V, T1]>                      =      0.012638368713361
+    <[V, T2]> C_4 (C_2)^2 HH       =      0.002960488021904
+    <[V, T2]> C_4 (C_2)^2 PP       =      0.013775240567003
+    <[V, T2]> C_4 (C_2)^2 PH       =      0.027747659954417
+    <[V, T2]> C_6 C_2              =     -0.003204456042006
+    <[V, T2]> (C_2)^4              =     -0.214383795603044
+    <[V, T2]>                      =     -0.173104863101725
+    DSRG-MRPT2 correlation energy  =     -0.161541658189425
+    DSRG-MRPT2 total energy        =   -100.100858040813605
+    max(T1)                        =      0.136560620290641
+    ||T1||                         =      0.244671981664324
+
+  ==> Total Timings (s) for Computing Commutators <==
+
+             [H1, T1]    [H1, T2]    [H2, T1]    [H2, T2]
+    -----------------------------------------------------
+    -> C0       0.002       0.002       0.003       0.031
+    -> C1       0.000       0.000       0.000       0.000
+    -> C2                   0.000       0.000       0.000
+    -----------------------------------------------------
+
+ CD/DF DSRG-MRPT2 took  0.62427 s.	DSRG-MRPT2 energy.................................................PASSED
+
+    Psi4 stopped on: Thursday, 25 October 2018 03:35PM
+    Psi4 wall time for execution: 0:00:01.30
+
+*** Psi4 exiting successfully. Buy a developer a beer!

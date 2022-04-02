@@ -1,0 +1,37 @@
+#! This tests the Adaptive Path-Integral FCI procedure with dynamic prescreening
+#! Generated using commit GITCOMMIT
+
+import forte
+
+refscf = -14.8434688911333978 #TEST
+refpci = -14.910557776072  #TEST
+
+molecule li2{
+   Li
+   Li 1 2.0000
+}
+
+set {
+  basis cc-pVTZ
+  scf_type pk
+  e_convergence 10
+}
+
+set forte {
+  job_type pci_hashvec
+  nroot 1
+  charge 0
+  PCI_tau 1.0
+  PCI_spawning_threshold 0.00002
+  PCI_ENERGY_ESTIMATE_FREQ 1
+  PCI_GENERATOR wall-chebyshev
+  PCI_maxbeta 100000.00
+  PCI_e_convergence 5
+  PCI_FAST_EVAR false
+}
+
+energy('scf')
+compare_values(refscf,variable("CURRENT ENERGY"),10,"SCF energy")
+
+energy('forte')
+compare_values(refpci, variable("PCI ENERGY"), 11, "PCI energy") #TEST

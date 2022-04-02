@@ -1,0 +1,45 @@
+#! Generated using commit GITCOMMIT
+
+import forte
+
+refrhf     = -2.179077709687158
+refdsrgpt2 = -2.238546872898894
+
+memory 500 mb
+
+molecule H4{
+  0 1
+  H  0.0 0.0 0.0
+  H  0.0 0.0 0.7
+  H  0.0 1.4 0.0
+  H  0.0 1.4 0.7
+}
+
+set globals{
+   basis                   cc-pvdz
+   reference               rhf
+   scf_type                pk
+   d_convergence           10
+   e_convergence           12
+   maxiter                 300
+}
+
+set forte{
+   active_space_solver     fci
+   correlation_solver      three-dsrg-mrpt2
+   restricted_docc         [0,0,0,0,0,0,0,0]
+   active                  [1,0,0,1,0,1,1,0]
+   root_sym                0
+   nroot                   1
+   dsrg_s                  0.5
+   threepdc                zero
+   int_type                cholesky
+   cholesky_tolerance      1e-14
+   print_denom2            true
+}
+
+Escf, wfn = energy('scf', return_wfn=True)
+compare_values(refrhf,variable("CURRENT ENERGY"),10,"SCF energy")
+
+energy('forte', ref_wfn=wfn)
+compare_values(refdsrgpt2,variable("CURRENT ENERGY"),10,"DSRG-MRPT2 energy")
