@@ -231,7 +231,7 @@ class DSRG_MRPT2 : public MASTER_DSRG {
     const bool X1_TERM          = true;
     const bool X2_TERM          = true;
     const bool X3_TERM          = true;
-    const bool X4_TERM          = true;
+    const bool X4_TERM          = false;
     const bool X5_TERM          = true;
     const bool X6_TERM          = true;
     const bool X7_TERM          = true;

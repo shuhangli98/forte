@@ -18,7 +18,7 @@ using namespace psi;
 
 namespace forte {
 
-int max_iter = 500;
+int max_iter = 1000;
 double err = 1e-9;
 
 void DSRG_MRPT2::set_zvec_moinfo() {
