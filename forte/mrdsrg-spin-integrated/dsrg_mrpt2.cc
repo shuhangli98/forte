@@ -1355,12 +1355,15 @@ double DSRG_MRPT2::E_VT2_6() {
         std::vector<int> v2{(int)i[3], (int)i[4], (int)i[5]};
         std::sort(v1.begin(), v1.end());
         std::sort(v2.begin(), v2.end());
+
         std::vector<int> v_symDifference;
         std::vector<int> v_diffvalues;
+
         std::set_symmetric_difference(
             v1.begin(), v1.end(),
             v2.begin(), v2.end(),
             std::back_inserter(v_symDifference));
+
         for (int n : v_symDifference) {
             v_diffvalues.push_back(n);
         }
@@ -1376,9 +1379,18 @@ double DSRG_MRPT2::E_VT2_6() {
             } else {
                 cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
             }
+        } else if (foptions_->get_str("CU_APPROX") == "CU"){
+            value = 0;
+        } else if (foptions_->get_str("CU_APPROX") == "CUDSD"){
+            if (v_diffvalues.size() > 4) {
+                value = 0;
+            } else {
+                cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+            }
         } else {
+            
         }
-    });
+    });    
    
 
     E += 0.25 * temp.block("aaaaaa")("uvwxyz") * rdms_.L3aaa()("xyzuvw");
@@ -1398,12 +1410,15 @@ double DSRG_MRPT2::E_VT2_6() {
         std::vector<int> v2{(int)i[3], (int)i[4], (int)i[5]};
         std::sort(v1.begin(), v1.end());
         std::sort(v2.begin(), v2.end());
+
         std::vector<int> v_symDifference;
         std::vector<int> v_diffvalues;
+
         std::set_symmetric_difference(
             v1.begin(), v1.end(),
             v2.begin(), v2.end(),
             std::back_inserter(v_symDifference));
+
         for (int n : v_symDifference) {
             v_diffvalues.push_back(n);
         }
@@ -1419,10 +1434,19 @@ double DSRG_MRPT2::E_VT2_6() {
             } else {
                 cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
             }
+        } else if (foptions_->get_str("CU_APPROX") == "CU"){
+            value = 0;
+        } else if (foptions_->get_str("CU_APPROX") == "CUDSD"){
+            if (v_diffvalues.size() > 4) {
+                value = 0;
+            } else {
+                cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+            }
         } else {
+            
         }
     });
-
+ 
     E += 0.25 * temp.block("AAAAAA")("UVWXYZ") * rdms_.L3bbb()("XYZUVW");
             
     // aab
@@ -1450,12 +1474,15 @@ double DSRG_MRPT2::E_VT2_6() {
         std::vector<int> v2{(int)i[3], (int)i[4], -((int)i[5])-1};
         std::sort(v1.begin(), v1.end());
         std::sort(v2.begin(), v2.end());
+
         std::vector<int> v_symDifference;
         std::vector<int> v_diffvalues;
+
         std::set_symmetric_difference(
             v1.begin(), v1.end(),
             v2.begin(), v2.end(),
             std::back_inserter(v_symDifference));
+
         for (int n : v_symDifference) {
             v_diffvalues.push_back(n);
         }
@@ -1471,9 +1498,18 @@ double DSRG_MRPT2::E_VT2_6() {
             } else {
                 cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
             }
+        } else if (foptions_->get_str("CU_APPROX") == "CU"){
+            value = 0;
+        } else if (foptions_->get_str("CU_APPROX") == "CUDSD"){
+            if (v_diffvalues.size() > 4) {
+                value = 0;
+            } else {
+                cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+            }
         } else {
+            
         }
-    });
+    }); 
 
     E += 0.5 * temp.block("aaAaaA")("uvWxyZ") * rdms_.L3aab()("xyZuvW");
 
@@ -1502,12 +1538,15 @@ double DSRG_MRPT2::E_VT2_6() {
         std::vector<int> v2{(int)i[3], -((int)i[4])-1, -((int)i[5])-1};
         std::sort(v1.begin(), v1.end());
         std::sort(v2.begin(), v2.end());
+
         std::vector<int> v_symDifference;
         std::vector<int> v_diffvalues;
+
         std::set_symmetric_difference(
             v1.begin(), v1.end(),
             v2.begin(), v2.end(),
             std::back_inserter(v_symDifference));
+
         for (int n : v_symDifference) {
             v_diffvalues.push_back(n);
         }
@@ -1523,9 +1562,18 @@ double DSRG_MRPT2::E_VT2_6() {
             } else {
                 cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
             }
+        } else if (foptions_->get_str("CU_APPROX") == "CU"){
+            value = 0;
+        } else if (foptions_->get_str("CU_APPROX") == "CUDSD"){
+            if (v_diffvalues.size() > 4) {
+                value = 0;
+            } else {
+                cout<<i[0]<<","<<i[1]<<","<<i[2]<<","<<i[3]<<","<<i[4]<<","<<i[5]<<","<<value<<"\n";
+            }
         } else {
+            
         }
-    });
+    }); 
 
     E += 0.5 * temp.block("aAAaAA")("uVWxYZ") * rdms_.L3abb()("xYZuVW");
 
