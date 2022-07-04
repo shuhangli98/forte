@@ -70,7 +70,8 @@ set forte{
    dsrg_s               1.0e10
    dsrgpt               true
    multiplicity         1
-   threepdc             zero
+   threepdc             zero 
+   cu_approx            cudsd
 }
 
 scf_energy, wfn = energy('mcscf', return_wfn=True)

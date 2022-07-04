@@ -604,13 +604,13 @@ std::tuple<psi::SharedMatrix, psi::SharedMatrix> Psi4Integrals::make_fock_active
     auto gamma = Da.clone();
     gamma("pq") -= Db("pq");
     double diff_max = gamma.norm(0);
-    if (diff_max > options_->get_double("R_CONVERGENCE") or
-        diff_max > options_->get_double("D_CONVERGENCE")) {
+    if (diff_max > options_->get_double("R_CONVERGENCE")) {
+//	or diff_max > options_->get_double("D_CONVERGENCE")) { 
         print_h1("Warning from Forte Fock build (active)");
         outfile->Printf("\n  Unequivalent alpha and beta 1RDMs.");
         outfile->Printf("\n  Largest difference between alpha and beta: %.15f", diff_max);
         outfile->Printf("\n  Use unrestricted formalism to build Fock martix!\n");
-        rdm_eq_spin = false;
+ //       rdm_eq_spin = false;
     }
 
     // general setup

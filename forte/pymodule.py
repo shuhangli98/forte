@@ -499,10 +499,10 @@ def run_forte(name, **kwargs):
     # Run a method
     job_type = options.get_str('JOB_TYPE')
 
-    if job_type == 'NONE':
-        psi4.core.set_scalar_variable('CURRENT ENERGY', 0.0)
-        # forte.cleanup()
-        return ref_wfn
+#    if job_type == 'NONE':
+#        psi4.core.set_scalar_variable('CURRENT ENERGY', 0.0)
+#        # forte.cleanup()
+#        return ref_wfn
 
     start_pre_ints = time.time()
 
@@ -528,6 +528,12 @@ def run_forte(name, **kwargs):
 
     # Run a method
     energy = 0.0
+
+    if job_type == 'NONE':
+        psi4.core.set_scalar_variable('CURRENT ENERGY', 0.0)
+        # forte.cleanup()
+        return ref_wfn
+
 
     if (options.get_bool("CASSCF_REFERENCE") or job_type == "CASSCF"):
         if options.get_str('INT_TYPE') == 'FCIDUMP':

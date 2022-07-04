@@ -46,4 +46,3 @@ if (ENABLE_ForteTests)
   add_executable(forte_benchmarks
     tests/benchmark/determinant_benchmark.cc)
 endif (ENABLE_ForteTests)
-

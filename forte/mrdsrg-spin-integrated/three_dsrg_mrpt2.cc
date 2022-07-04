@@ -1514,12 +1514,138 @@ double THREE_DSRG_MRPT2::E_VT2_6() {
             BlockedTensor temp = BTF_->build(tensor_type_, "temp", {"aaaaaa"});
             temp["uvwxyz"] += V_["uviz"] * T2_["iwxy"];
             temp["uvwxyz"] += V_["waxy"] * T2_["uvaz"];
+
+            int num_aaa_ori{0};
+            int num_aaa_ori_4{0};
+            int num_aaa_approx{0};
+            int num_aaa_approx_4{0};
+
+	    rdms_.L3aaa().iterate([&](const std::vector<size_t>& i, double& value) {
+                num_aaa_ori++;
+                    if (value > 0.0001) {
+                        num_aaa_ori_4++;
+                   }
+       		std::vector<int> v1{(int)i[0], (int)i[1], (int)i[2]};
+                std::vector<int> v2{(int)i[3], (int)i[4], (int)i[5]};
+                std::sort(v1.begin(), v1.end());
+                std::sort(v2.begin(), v2.end());
+        
+                std::vector<int> v_symDifference;
+                std::vector<int> v_diffvalues;
+        
+                std::set_symmetric_difference(
+                    v1.begin(), v1.end(),
+                    v2.begin(), v2.end(),
+                    std::back_inserter(v_symDifference));
+        
+                for (int n : v_symDifference) {
+                    v_diffvalues.push_back(n);
+                }
+                if (foptions_->get_str("CU_APPROX") == "CUDS") {
+                    if (v_diffvalues.size() > 2) {
+                        value = 0;
+                    } else {
+                        num_aaa_approx++;
+                            if (value > 0.0001) {
+                                num_aaa_approx_4++;
+                           }
+                    }
+                } else if (foptions_->get_str("CU_APPROX") == "CUD") {
+                    if (v_diffvalues.size() != 0) {
+                        value = 0;
+                    } else {
+                        num_aaa_approx++;
+                            if (value > 0.0001) {
+                                num_aaa_approx_4++;
+                           }
+                    }
+                } else if (foptions_->get_str("CU_APPROX") == "CU"){
+                    value = 0;
+                } else if (foptions_->get_str("CU_APPROX") == "CUDSD"){
+                    if (v_diffvalues.size() > 4) {
+                        value = 0;
+                    } else {
+                        num_aaa_approx++;
+                            if (value > 0.0001) {
+                                num_aaa_approx_4++;
+                           }
+                    }
+                } else {
+                    num_aaa_approx++;
+                        if (value > 0.0001) {
+                            num_aaa_approx_4++;
+                       }
+                }
+            });
             E += 0.25 * temp.block("aaaaaa")("uvwxyz") * rdms_.L3aaa()("xyzuvw");
 
             // bbb
             temp = BTF_->build(tensor_type_, "temp", {"AAAAAA"});
             temp["UVWXYZ"] += V_["UVIZ"] * T2_["IWXY"];
             temp["UVWXYZ"] += V_["WAXY"] * T2_["UVAZ"];
+
+            int num_bbb_ori{0};
+            int num_bbb_ori_4{0};
+            int num_bbb_approx{0};
+            int num_bbb_approx_4{0};
+
+            rdms_.L3bbb().iterate([&](const std::vector<size_t>& i, double& value) {
+                num_bbb_ori++;
+                    if (value > 0.0001) {
+                        num_bbb_ori_4++;
+                   }
+                std::vector<int> v1{(int)i[0], (int)i[1], (int)i[2]};
+                std::vector<int> v2{(int)i[3], (int)i[4], (int)i[5]};
+                std::sort(v1.begin(), v1.end());
+                std::sort(v2.begin(), v2.end());
+
+                std::vector<int> v_symDifference;
+                std::vector<int> v_diffvalues;
+
+                std::set_symmetric_difference(
+                    v1.begin(), v1.end(),
+                    v2.begin(), v2.end(),
+                    std::back_inserter(v_symDifference));
+
+                for (int n : v_symDifference) {
+                    v_diffvalues.push_back(n);
+                }
+                if (foptions_->get_str("CU_APPROX") == "CUDS") {
+                    if (v_diffvalues.size() > 2) {
+                        value = 0;
+                    } else {
+                        num_bbb_approx++;
+                            if (value > 0.0001) {
+                                num_bbb_approx_4++;
+                           }
+                    }
+                } else if (foptions_->get_str("CU_APPROX") == "CUD") {
+                    if (v_diffvalues.size() != 0) {
+                        value = 0;
+                    } else {
+                        num_bbb_approx++;
+                            if (value > 0.0001) {
+                                num_bbb_approx_4++;
+                           }
+                    }
+                } else if (foptions_->get_str("CU_APPROX") == "CU"){
+                    value = 0;
+                } else if (foptions_->get_str("CU_APPROX") == "CUDSD"){
+                    if (v_diffvalues.size() > 4) {
+                        value = 0;
+                    } else {
+                        num_bbb_approx++;
+                            if (value > 0.0001) {
+                                num_bbb_approx_4++;
+                           }
+                    }
+                } else {
+                    num_bbb_approx++;
+                        if (value > 0.0001) {
+                            num_bbb_approx_4++;
+                       }
+                }
+            });
             E += 0.25 * temp.block("AAAAAA")("UVWXYZ") * rdms_.L3bbb()("XYZUVW");
 
             // aab
@@ -1532,6 +1658,68 @@ double THREE_DSRG_MRPT2::E_VT2_6() {
             temp["uvWxyZ"] -= V_["vaxy"] * T2_["uWaZ"];
             temp["uvWxyZ"] -= 2.0 * V_["vAxZ"] * T2_["uWyA"];
 
+            int num_aab_ori{0};
+            int num_aab_ori_4{0};
+            int num_aab_approx{0};
+            int num_aab_approx_4{0};
+
+            rdms_.L3aab().iterate([&](const std::vector<size_t>& i, double& value) {
+                num_aab_ori++;
+                    if (value > 0.0001) {
+                        num_aab_ori_4++;
+                   }
+                std::vector<int> v1{(int)i[0], (int)i[1], -((int)i[2])-1};
+                std::vector<int> v2{(int)i[3], (int)i[4], -((int)i[5])-1};
+                std::sort(v1.begin(), v1.end());
+                std::sort(v2.begin(), v2.end());
+        
+                std::vector<int> v_symDifference;
+                std::vector<int> v_diffvalues;
+        
+                std::set_symmetric_difference(
+                    v1.begin(), v1.end(),
+                    v2.begin(), v2.end(),
+                    std::back_inserter(v_symDifference));
+        
+                for (int n : v_symDifference) {
+                    v_diffvalues.push_back(n);
+                }
+                if (foptions_->get_str("CU_APPROX") == "CUDS") {
+                    if (v_diffvalues.size() > 2) {
+                        value = 0;
+                    } else {
+                        num_aab_approx++;
+                            if (value > 0.0001) {
+                                num_aab_approx_4++;
+                           }
+                    }
+                } else if (foptions_->get_str("CU_APPROX") == "CUD") {
+                    if (v_diffvalues.size() != 0) {
+                        value = 0;
+                    } else {
+                        num_aab_approx++;
+                            if (value > 0.0001) {
+                                num_aab_approx_4++;
+                           }
+                    }
+                } else if (foptions_->get_str("CU_APPROX") == "CU"){
+                    value = 0;
+                } else if (foptions_->get_str("CU_APPROX") == "CUDSD"){
+                    if (v_diffvalues.size() > 4) {
+                        value = 0;
+                    } else {
+                        num_aab_approx++;
+                            if (value > 0.0001) {
+                                num_aab_approx_4++;
+                           }
+                    }
+                } else {
+                    num_aab_approx++;
+                        if (value > 0.0001) {
+                            num_aab_approx_4++;
+                       }
+                }
+            }); 
             E += 0.50 * temp.block("aaAaaA")("uvWxyZ") * rdms_.L3aab()("xyZuvW");
 
             // abb
@@ -1544,7 +1732,86 @@ double THREE_DSRG_MRPT2::E_VT2_6() {
             temp["uVWxYZ"] -= V_["WAYZ"] * T2_["uVxA"];
             temp["uVWxYZ"] -= 2.0 * V_["aWxY"] * T2_["uVaZ"];
 
+            int num_abb_ori{0};
+            int num_abb_ori_4{0};
+            int num_abb_approx{0};
+            int num_abb_approx_4{0};
+
+            rdms_.L3abb().iterate([&](const std::vector<size_t>& i, double& value) {
+                num_abb_ori++;
+                    if (value > 0.0001) {
+                        num_abb_ori_4++;
+                   }
+                std::vector<int> v1{(int)i[0], -((int)i[1])-1, -((int)i[2])-1};
+                std::vector<int> v2{(int)i[3], -((int)i[4])-1, -((int)i[5])-1};
+                std::sort(v1.begin(), v1.end());
+                std::sort(v2.begin(), v2.end());
+
+                std::vector<int> v_symDifference;
+                std::vector<int> v_diffvalues;
+
+                std::set_symmetric_difference(
+                    v1.begin(), v1.end(),
+                    v2.begin(), v2.end(),
+                    std::back_inserter(v_symDifference));
+
+                for (int n : v_symDifference) {
+                    v_diffvalues.push_back(n);
+                }
+                if (foptions_->get_str("CU_APPROX") == "CUDS") {
+                    if (v_diffvalues.size() > 2) {
+                        value = 0;
+                    } else {
+                        num_abb_approx++;
+                            if (value > 0.0001) {
+                                num_abb_approx_4++;
+                           }
+                    }
+                } else if (foptions_->get_str("CU_APPROX") == "CUD") {
+                    if (v_diffvalues.size() != 0) {
+                        value = 0;
+                    } else {
+                        num_abb_approx++;
+                            if (value > 0.0001) {
+                                num_abb_approx_4++;
+                           }
+                    }
+                } else if (foptions_->get_str("CU_APPROX") == "CU"){
+                    value = 0;
+                } else if (foptions_->get_str("CU_APPROX") == "CUDSD"){
+                    if (v_diffvalues.size() > 4) {
+                        value = 0;
+                    } else {
+                        num_abb_approx++;
+                            if (value > 0.0001) {
+                                num_abb_approx_4++;
+                           }
+                    }
+                } else {
+                    num_abb_approx++;
+                        if (value > 0.0001) {
+                            num_abb_approx_4++;
+                       }
+                }
+            });
+
             E += 0.50 * temp.block("aAAaAA")("uVWxYZ") * rdms_.L3abb()("xYZuVW");
+            outfile->Printf("\n    Number of original tensor elements in aaa block is %d", num_aaa_ori);
+            outfile->Printf("\n    Number of original tensor elements in bbb block is %d", num_bbb_ori);
+            outfile->Printf("\n    Number of original tensor elements in aab block is %d", num_aab_ori);
+            outfile->Printf("\n    Number of original tensor elements in abb block is %d", num_abb_ori);
+            outfile->Printf("\n    Number of original tensor elements (larger than 0.0001) in aaa block is %d", num_aaa_ori_4);
+            outfile->Printf("\n    Number of original tensor elements (larger than 0.0001) in bbb block is %d", num_bbb_ori_4);
+            outfile->Printf("\n    Number of original tensor elements (larger than 0.0001) in aab block is %d", num_aab_ori_4);
+            outfile->Printf("\n    Number of original tensor elements (larger than 0.0001) in abb block is %d", num_abb_ori_4);
+            outfile->Printf("\n    Number of unchanged tensor elements in aaa block is %d", num_aaa_approx);
+            outfile->Printf("\n    Number of unchanged tensor elements in bbb block is %d", num_bbb_approx);
+            outfile->Printf("\n    Number of unchanged tensor elements in aab block is %d", num_aab_approx);
+            outfile->Printf("\n    Number of unchanged tensor elements in abb block is %d", num_abb_approx);
+            outfile->Printf("\n    Number of unchanged tensor elements (larger than 0.0001) in aaa block is %d", num_aaa_approx_4);
+            outfile->Printf("\n    Number of unchanged tensor elements (larger than 0.0001) in bbb block is %d", num_bbb_approx_4);
+            outfile->Printf("\n    Number of unchanged tensor elements (larger than 0.0001) in aab block is %d", num_aab_approx_4);
+            outfile->Printf("\n    Number of unchanged tensor elements (larger than 0.0001) in abb block is %d", num_abb_approx_4);
 
         } else if (foptions_->get_str("THREEPDC_ALGORITHM") == "BATCH") {
 
@@ -1673,7 +1940,7 @@ double THREE_DSRG_MRPT2::E_VT2_6() {
         }
     }
 
-    outfile->Printf("... Done. Timing %15.6f s", timer.get());
+    outfile->Printf("\n... Done. Timing %15.6f s", timer.get());
     return E;
 }
 
