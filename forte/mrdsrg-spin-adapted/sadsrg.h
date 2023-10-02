@@ -61,6 +61,8 @@ class SADSRG : public DynamicCorrelationSolver {
     /// Compute energy
     virtual double compute_energy() override = 0;
 
+    std::shared_ptr<ActiveSpaceIntegrals> compute_Heff_full();
+
     /// Compute DSRG transformed Hamiltonian
     std::shared_ptr<ActiveSpaceIntegrals> compute_Heff_actv() override;
 
@@ -469,7 +471,7 @@ class SADSRG : public DynamicCorrelationSolver {
     /// Print the contents with padding: <text> <padding with dots>
     void print_contents(const std::string& str, size_t size = 45);
     /// Print done and timing
-    void print_done(double t, const std::string& done="Done");
+    void print_done(double t, const std::string& done = "Done");
 
     // ==> common amplitudes analysis and printing <==
 

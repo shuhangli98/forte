@@ -33,6 +33,7 @@
 #include "psi4/libpsi4util/PsiOutStream.h"
 
 #include "helpers/timer.h"
+#include "integrals/active_space_integrals.h"
 #include "sa_mrdsrg.h"
 
 using namespace psi;
@@ -295,6 +296,31 @@ void SA_MRDSRG::compute_hbar() {
                         rsc_ncomm_);
         outfile->Printf("\n    Please increase DSRG_RSC_NCOMM.");
     }
+}
+
+std::shared_ptr<ActiveSpaceIntegrals> SADSRG::compute_Heff_full() {
+    // de-normal-order DSRG transformed Hamiltonian
+    double Edsrg = Eref_ + Hbar0_;
+
+    deGNO_ints("Hamiltonian", Edsrg, Hbar1_, Hbar2_);
+
+    rotate_one_ints_to_original(Hbar1_);
+    rotate_two_ints_to_original(Hbar2_);
+
+    // create FCIIntegral shared_ptr
+    std::vector<size_t> all_mos = mo_space_info_->corr_absolute_mo("ALL");
+    std::vector<size_t> core_mos = {};
+    std::vector<int> all_mos_sym = mo_space_info_->symmetry("ALL");
+    auto fci_ints = std::make_shared<ActiveSpaceIntegrals>(ints_, all_mos, all_mos_sym, core_mos);
+    fci_ints->set_scalar_energy(Edsrg);
+    fci_ints->set_restricted_one_body_operator(Hbar1_.block("gg").data(),
+                                               Hbar1_.block("gg").data());
+
+    auto Hbar2aa = Hbar2_.block("gggg").clone();
+    Hbar2aa("pqrs") -= Hbar2_.block("gggg")("pqsr");
+    fci_ints->set_active_integrals(Hbar2aa, Hbar2_.block("gggg"), Hbar2aa);
+
+    return fci_ints;
 }
 
 void SA_MRDSRG::compute_hbar_sequential() {
